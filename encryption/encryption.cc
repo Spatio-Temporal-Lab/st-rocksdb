@@ -99,8 +99,8 @@ Status AESCTRCipherStream::Cipher(uint64_t file_offset, char* data,
   PutBigEndian64(iv_low, iv.data() + sizeof(uint64_t));
 
   ret = EVP_CipherInit(ctx, cipher_,
-                       reinterpret_cast<const unsigned char*>(key_.data()), iv.data(),
-                       (is_encrypt ? 1 : 0));
+                       reinterpret_cast<const unsigned char*>(key_.data()),
+                       iv.data(), (is_encrypt ? 1 : 0));
   if (ret != 1) {
     return Status::IOError("Failed to init cipher.");
   }
@@ -127,8 +127,8 @@ Status AESCTRCipherStream::Cipher(uint64_t file_offset, char* data,
     size_t partial_block_size =
         std::min<size_t>(block_size - block_offset, remaining_data_size);
     memcpy(partial_block.data() + block_offset, data, partial_block_size);
-    ret = EVP_CipherUpdate(ctx, partial_block.data(), &output_size, partial_block.data(),
-                           static_cast<int>(block_size));
+    ret = EVP_CipherUpdate(ctx, partial_block.data(), &output_size,
+                           partial_block.data(), static_cast<int>(block_size));
     if (ret != 1) {
       FreeCipherContext(ctx);
       return Status::IOError("Crypter failed for first block, offset " +
@@ -174,8 +174,8 @@ Status AESCTRCipherStream::Cipher(uint64_t file_offset, char* data,
   if (remaining_data_size > 0) {
     assert(remaining_data_size < block_size);
     memcpy(partial_block.data(), data + data_offset, remaining_data_size);
-    ret = EVP_CipherUpdate(ctx, partial_block.data(), &output_size, partial_block.data(),
-                           static_cast<int>(block_size));
+    ret = EVP_CipherUpdate(ctx, partial_block.data(), &output_size,
+                           partial_block.data(), static_cast<int>(block_size));
     if (ret != 1) {
       FreeCipherContext(ctx);
       return Status::IOError("Crypter failed for last block, offset " +
