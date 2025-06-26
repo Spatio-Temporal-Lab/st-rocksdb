@@ -288,8 +288,8 @@ pkg-config --cflags --libs st-rocksdb
 ### 直接使用
 
 \`\`\`cpp
-#include <rocksdb/db.h>
-#include <rocksdb/options.h>
+#include "rocksdb/db.h"
+#include "rocksdb/options.h"
 
 // 链接时添加: -L/path/to/lib -lrocksdb
 \`\`\`
