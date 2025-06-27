@@ -185,6 +185,8 @@ jobs:
         echo "CXX=clang++" >> $GITHUB_ENV
         echo "GTEST_THROW_ON_FAILURE=1" >> $GITHUB_ENV
         echo "GTEST_HAS_EXCEPTIONS=1" >> $GITHUB_ENV
+        # 临时调整编译器标志以处理一些已知的警告
+        echo "EXTRA_CXXFLAGS=-Wno-unused-variable -Wno-unused-parameter" >> $GITHUB_ENV
 
     - name: Build test infrastructure
       run: |

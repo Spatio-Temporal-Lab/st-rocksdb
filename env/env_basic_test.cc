@@ -16,6 +16,7 @@
 #include "rocksdb/env.h"
 #include "rocksdb/env_encryption.h"
 #include "rocksdb/env_inspected.h"
+#include "test_util/sync_point.h"
 #include "test_util/testharness.h"
 
 namespace ROCKSDB_NAMESPACE {
@@ -215,6 +216,7 @@ TEST_P(EnvBasicTestWithParam, RenameCurrent) {
       "KeyManagedEncryptedEnv::NewWritableFile", [&](void* arg) {
         bool* skip = static_cast<bool*>(arg);
         *skip = false;
+        (void)arg;  // 避免未使用参数的警告
       });
   SyncPoint::GetInstance()->EnableProcessing();
   ASSERT_OK(
