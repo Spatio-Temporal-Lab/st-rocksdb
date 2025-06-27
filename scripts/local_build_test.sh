@@ -187,10 +187,29 @@ run_basic_tests() {
     if [[ -f "./db_test" ]]; then
         # 运行一些基本测试，设置超时
         log_info "运行数据库基本功能测试..."
-        if timeout 300 ./db_test --gtest_filter="*Basic*" 2>/dev/null; then
-            log_success "基本测试通过"
+        # 跨平台超时处理
+        if command -v timeout >/dev/null 2>&1; then
+            # Linux 系统
+            if timeout 300 ./db_test --gtest_filter="*Basic*" 2>/dev/null; then
+                log_success "基本测试通过"
+            else
+                log_warning "基本测试超时或失败，但这可能是正常的"
+            fi
+        elif command -v gtimeout >/dev/null 2>&1; then
+            # macOS 使用 gtimeout (brew install coreutils)
+            if gtimeout 300 ./db_test --gtest_filter="*Basic*" 2>/dev/null; then
+                log_success "基本测试通过"
+            else
+                log_warning "基本测试超时或失败，但这可能是正常的"
+            fi
         else
-            log_warning "基本测试超时或失败，但这可能是正常的"
+            # 没有超时工具，直接运行
+            log_warning "⚠️ 没有找到超时工具，直接运行测试 (无超时保护)"
+            if ./db_test --gtest_filter="*Basic*" 2>/dev/null; then
+                log_success "基本测试通过"
+            else
+                log_warning "基本测试失败，但这可能是正常的"
+            fi
         fi
     else
         log_warning "测试程序不存在，跳过测试"
