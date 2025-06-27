@@ -16,6 +16,7 @@
 #include "rocksdb/env.h"
 #include "rocksdb/env_encryption.h"
 #include "rocksdb/env_inspected.h"
+#include "test_util/sync_point.h"
 #include "test_util/testharness.h"
 
 namespace ROCKSDB_NAMESPACE {
@@ -211,16 +212,20 @@ TEST_P(EnvBasicTestWithParam, RenameCurrent) {
   std::vector<std::string> children;
 
   // Create an encrypted `CURRENT` file so it shouldn't be skipped .
-  SyncPoint::GetInstance()->SetCallBack(
+#ifndef NDEBUG
+  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()->SetCallBack(
       "KeyManagedEncryptedEnv::NewWritableFile", [&](void* arg) {
         bool* skip = static_cast<bool*>(arg);
         *skip = false;
       });
-  SyncPoint::GetInstance()->EnableProcessing();
+  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()->EnableProcessing();
+#endif
   ASSERT_OK(
       env_->NewWritableFile(test_dir_ + "/CURRENT", &writable_file, soptions_));
-  SyncPoint::GetInstance()->ClearAllCallBacks();
-  SyncPoint::GetInstance()->DisableProcessing();
+#ifndef NDEBUG
+  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()->ClearAllCallBacks();
+  ROCKSDB_NAMESPACE::SyncPoint::GetInstance()->DisableProcessing();
+#endif
   ASSERT_OK(writable_file->Append("MANIFEST-0"));
   ASSERT_OK(writable_file->Close());
   writable_file.reset();

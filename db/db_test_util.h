@@ -197,6 +197,7 @@ class SpecialEnv : public EnvWrapper {
         // Check preallocation size
         // preallocation size is never passed to base file.
         size_t preallocation_size = preallocation_block_size();
+        (void)preallocation_size;  // 避免未使用变量警告
         TEST_SYNC_POINT_CALLBACK("DBTestWritableFile.GetPreallocationStatus",
                                  &preallocation_size);
 #endif  // !(defined NDEBUG) || !defined(OS_WIN)
