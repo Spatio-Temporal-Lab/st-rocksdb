@@ -90,9 +90,9 @@ jobs:
     - name: Build test libraries
       run: |
         if [ "${{ matrix.build_type }}" = "Debug" ]; then
-          make test_library DEBUG_LEVEL=1 -j$(nproc)
+          make test_libs DEBUG_LEVEL=1 -j$(nproc)
         else
-          make test_library DEBUG_LEVEL=0 -j$(nproc)
+          make test_libs DEBUG_LEVEL=0 -j$(nproc)
         fi
 
     - name: Cache build artifacts
