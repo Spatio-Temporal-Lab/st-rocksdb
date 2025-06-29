@@ -185,10 +185,10 @@ third-party/gtest-1.8.1/             # Google Test框架
     new_test_name
   
   echo "运行基础功能测试..."
-  ./arena_test --gtest_brief=1
-  ./coding_test --gtest_brief=1
+  ./arena_test --gtest_color=no
+  ./coding_test --gtest_color=no
   # 在这里添加新的测试执行
-  ./new_test_name --gtest_brief=1
+  ./new_test_name --gtest_color=no
   ;;
 ```
 
@@ -250,17 +250,21 @@ make DEBUG_LEVEL=1 arena_test && ./arena_test
 
 # 列出测试中的所有用例
 ./arena_test --gtest_list_tests
+
+# 运行测试（禁用彩色输出）
+./arena_test --gtest_color=no
 ```
 
 ### 📊 测试性能优化
 
 #### 🎯 GTest 选项优化:
 ```bash
---gtest_brief=1          # 简洁输出
+--gtest_color=no         # 禁用彩色输出
 --gtest_filter="*Basic*" # 过滤测试用例
 --gtest_repeat=1         # 重复次数
 --gtest_shuffle          # 随机顺序
 --gtest_break_on_failure # 首次失败时停止
+--gtest_print_time=0     # 不显示运行时间
 ```
 
 #### ⏱️ 超时设置策略:

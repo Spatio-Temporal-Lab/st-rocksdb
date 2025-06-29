@@ -213,12 +213,12 @@ jobs:
               slice_test
             
             echo "运行基础功能测试..."
-            ./arena_test --gtest_brief=1
-            ./coding_test --gtest_brief=1
-            ./crc32c_test --gtest_brief=1
-            ./hash_test --gtest_brief=1
-            ./random_test --gtest_brief=1
-            ./slice_test --gtest_brief=1
+            ./arena_test --gtest_color=no
+            ./coding_test --gtest_color=no
+            ./crc32c_test --gtest_color=no
+            ./hash_test --gtest_color=no
+            ./random_test --gtest_color=no
+            ./slice_test --gtest_color=no
             ;;
             
           "db")
@@ -229,9 +229,9 @@ jobs:
               dbformat_test
             
             echo "运行数据库核心测试..."
-            timeout 300 ./db_basic_test --gtest_brief=1 --gtest_filter="*Basic*:*Put*:*Get*" || echo "DB basic test completed"
-            timeout 180 ./corruption_test --gtest_brief=1 --gtest_filter="*Recovery*" || echo "Corruption test completed" 
-            ./dbformat_test --gtest_brief=1
+            timeout 300 ./db_basic_test --gtest_color=no --gtest_filter="*Basic*:*Put*:*Get*" || echo "DB basic test completed"
+            timeout 180 ./corruption_test --gtest_color=no --gtest_filter="*Recovery*" || echo "Corruption test completed" 
+            ./dbformat_test --gtest_color=no
             ;;
             
           "util")
@@ -244,11 +244,11 @@ jobs:
               work_queue_test
             
             echo "运行工具库测试..."
-            ./autovector_test --gtest_brief=1
-            ./bloom_test --gtest_brief=1 --gtest_filter="*Basic*"
-            ./dynamic_bloom_test --gtest_brief=1 --gtest_filter="*Basic*"
-            ./thread_local_test --gtest_brief=1
-            ./work_queue_test --gtest_brief=1
+            ./autovector_test --gtest_color=no
+            ./bloom_test --gtest_color=no --gtest_filter="*Basic*"
+            ./dynamic_bloom_test --gtest_color=no --gtest_filter="*Basic*"
+            ./thread_local_test --gtest_color=no
+            ./work_queue_test --gtest_color=no
             ;;
             
           "table")
@@ -260,10 +260,10 @@ jobs:
               block_fetcher_test
             
             echo "运行表格处理测试..."
-            timeout 240 ./table_test --gtest_brief=1 --gtest_filter="*TableTest.Basic*:*TableTest.Empty*" || echo "Table test completed"
-            ./block_test --gtest_brief=1 --gtest_filter="*SimpleBlock*"
-            ./merger_test --gtest_brief=1
-            ./block_fetcher_test --gtest_brief=1 --gtest_filter="*Basic*"
+            timeout 240 ./table_test --gtest_color=no --gtest_filter="*TableTest.Basic*:*TableTest.Empty*" || echo "Table test completed"
+            ./block_test --gtest_color=no --gtest_filter="*SimpleBlock*"
+            ./merger_test --gtest_color=no
+            ./block_fetcher_test --gtest_color=no --gtest_filter="*Basic*"
             ;;
             
           "cache")
@@ -273,8 +273,8 @@ jobs:
               histogram_test
             
             echo "运行缓存系统测试..."
-            timeout 200 ./cache_test --gtest_brief=1 --gtest_filter="*Cache.Basic*:*Cache.Simple*" || echo "Cache test completed"
-            ./histogram_test --gtest_brief=1
+            timeout 200 ./cache_test --gtest_color=no --gtest_filter="*Cache.Basic*:*Cache.Simple*" || echo "Cache test completed"
+            ./histogram_test --gtest_color=no
             ;;
         esac
         
